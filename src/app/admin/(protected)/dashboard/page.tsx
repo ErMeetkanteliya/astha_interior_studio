@@ -2,13 +2,13 @@ import React from 'react';
 import connectDB from '@/lib/db';
 import Project from '@/lib/models/Project';
 import ContactMessage from '@/lib/models/ContactMessage';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardContent } from '@/components/ui/Card';
 import { FolderKanban, Globe, FileEdit, MailWarning } from 'lucide-react';
 
 export const revalidate = 0;
 
 export default async function AdminDashboardPage() {
-  let stats = {
+  const stats = {
     totalProjects: 0,
     publishedProjects: 0,
     draftProjects: 0,

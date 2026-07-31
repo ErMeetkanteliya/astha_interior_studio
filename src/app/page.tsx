@@ -112,14 +112,16 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. ABOUT PREVIEW */}
-      <section className="py-20 sm:py-28 bg-soft-white">
+      {/* LIGHT CONTENT SECTIONS CONTINUOUS PAPER CANVAS */}
+      <div className="bg-paper-texture">
+        {/* 2. ABOUT PREVIEW */}
+        <section className="py-20 sm:py-28 bg-soft-white">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Image Box */}
             <div className="lg:col-span-6">
               <RevealOnScroll direction="left">
-                <div className="relative aspect-[4/3] w-full overflow-hidden border border-light-accent/30 bg-off-white">
+                <div className="relative aspect-[4/3] w-full overflow-hidden  bg-off-white">
                   <Image
                     src={aboutImage}
                     alt="About ASTHA"
@@ -291,8 +293,10 @@ export default async function HomePage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredProjects.map((project) => (
-                <ProjectCard key={project._id} project={project} />
+              {featuredProjects.map((project, idx) => (
+                <RevealOnScroll key={project._id} delay={idx * 0.12}>
+                  <ProjectCard project={project} />
+                </RevealOnScroll>
               ))}
             </div>
           )}
@@ -438,9 +442,10 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
+      </div>
 
       {/* 10. CONTACT CTA */}
-      <section className="py-24 sm:py-32 bg-off-white border-t border-light-accent/15 text-center relative overflow-hidden">
+      <section className="py-24 sm:py-32 bg-charcoal border-t border-light-accent/15 text-center relative overflow-hidden text-soft-white">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-light-accent/10 via-transparent to-transparent opacity-50 z-0" />
         
         <Container className="relative z-10 max-w-3xl">
@@ -448,10 +453,10 @@ export default async function HomePage() {
             <span className="text-[10px] sm:text-xs font-semibold tracking-[0.25em] uppercase text-primary-accent mb-4 block">
               BEGIN YOUR TRANSFORMATION
             </span>
-            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light text-deep-black tracking-wide leading-tight mb-8">
+            <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light text-soft-white tracking-wide leading-tight mb-8">
               Let’s Craft Your Vision Into Reality
             </h2>
-            <p className="text-sm sm:text-base text-charcoal/65 font-light leading-relaxed max-w-lg mx-auto mb-10">
+            <p className="text-sm sm:text-base text-soft-white/70 font-light leading-relaxed max-w-lg mx-auto mb-10">
               Schedule a private design consultation with our architects to elevate your home or commercial environment.
             </p>
             <Link href="/contact">

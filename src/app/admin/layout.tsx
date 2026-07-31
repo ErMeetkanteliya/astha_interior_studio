@@ -5,5 +5,9 @@ export default function AdminRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <div className="bg-[#FAF9F6] min-h-screen text-deep-black" style={{ backgroundImage: 'none' }}>
+      {children}
+    </div>
+  );
 }

@@ -2,9 +2,9 @@
 
 @theme {
   --color-primary-accent: #C5A880;
-  --color-light-accent: #E6DFD5;
+  --color-light-accent: #5C4B3A;
   --color-charcoal: #1C1C1C;
-  --color-off-white: #F4F3EF;
+  --color-off-white: #F4F2ED;
   --color-soft-white: #FAF9F6;
   --color-deep-black: #121212;
   
@@ -31,6 +31,79 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Single continuous paper texture wrapper for light content sections - crisp native resolution rendering */
+.bg-paper-texture {
+  background-image: url('/background.png');
+  background-repeat: repeat;
+  background-size: auto;
+  background-position: top left;
+}
+
+/* Ensure no nested wrapper or section inside light content overrides or duplicates paper background */
+.bg-paper-texture section,
+.bg-paper-texture .bg-soft-white,
+.bg-paper-texture .bg-off-white,
+section.bg-soft-white,
+section.bg-off-white {
+  background-color: transparent;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Solid dark sections and footer cover paper texture with solid dark #1C1C1C */
+.bg-charcoal,
+.bg-deep-black,
+section.bg-charcoal,
+section.bg-deep-black,
+footer.bg-charcoal,
+footer.bg-deep-black {
+  background-color: #1C1C1C !important;
+  background-image: none !important;
+}
+
+/* High contrast text readability on paper texture sections */
+section.bg-soft-white .text-primary-accent,
+section.bg-off-white .text-primary-accent,
+.bg-paper-texture .text-primary-accent {
+  color: #5C4B3A;
+}
+
+section.bg-soft-white p,
+section.bg-off-white p,
+.bg-paper-texture p {
+  color: #2D2D2D;
+}
+
+section.bg-soft-white .text-charcoal\/40,
+section.bg-off-white .text-charcoal\/40,
+section.bg-soft-white .text-charcoal\/50,
+section.bg-off-white .text-charcoal\/50,
+section.bg-soft-white .text-charcoal\/60,
+section.bg-off-white .text-charcoal\/60,
+section.bg-soft-white .text-charcoal\/65,
+section.bg-off-white .text-charcoal\/65,
+section.bg-soft-white .text-charcoal\/70,
+section.bg-off-white .text-charcoal\/70,
+section.bg-soft-white .text-charcoal\/80,
+section.bg-off-white .text-charcoal\/80 {
+  color: #2D2D2D;
+}
+
+/* Darker borders for paper texture readability */
+section.bg-soft-white .border-light-accent\/15,
+section.bg-off-white .border-light-accent\/15,
+section.bg-soft-white .border-light-accent\/25,
+section.bg-off-white .border-light-accent\/25,
+section.bg-soft-white .border-light-accent\/30,
+section.bg-off-white .border-light-accent\/30,
+section.bg-soft-white .border-light-accent\/40,
+section.bg-off-white .border-light-accent\/40,
+section.bg-soft-white .border-light-accent\/50,
+section.bg-off-white .border-light-accent\/50 {
+  border-color: rgba(92, 75, 58, 0.35);
 }
 
 /* Premium Selection styling */
@@ -125,3 +198,36 @@ body {
   }
 }
 
+/* ─── Lenis Smooth Scroll Overrides ──────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  scroll-behavior: auto;
+}
+
+html.lenis {
+  height: auto;
+}
+
+/* ─── GPU Acceleration Helpers ───────────────────────────────────────────────── */
+[data-scroll-reveal] {
+  will-change: transform, opacity;
+}
+
+/* ─── Reduced Motion Preferences ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-scroll-reveal],
+  [data-parallax] {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}

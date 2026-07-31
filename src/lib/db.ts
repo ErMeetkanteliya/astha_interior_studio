@@ -15,7 +15,6 @@ interface GlobalMongoose {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var mongooseCached: GlobalMongoose | undefined;
 }
 
@@ -113,13 +112,14 @@ async function connectDB() {
 
   try {
     cached!.conn = await cached!.promise;
-  } catch (e: any) {
+  } catch (e: unknown) {
     cached!.promise = null;
+    const err = e as { name?: string; message?: string; code?: string | number; stack?: string };
     console.error('\x1b[31m%s\x1b[0m', '[DB] MongoDB Atlas connection FAILED');
-    console.error(`[DB] Error name: ${e?.name}`);
-    console.error(`[DB] Error message: ${e?.message}`);
-    console.error(`[DB] Error code: ${e?.code}`);
-    console.error(`[DB] Full stack:`, e?.stack);
+    console.error(`[DB] Error name: ${err?.name}`);
+    console.error(`[DB] Error message: ${err?.message}`);
+    console.error(`[DB] Error code: ${err?.code}`);
+    console.error(`[DB] Full stack:`, err?.stack);
     throw e;
   }
 

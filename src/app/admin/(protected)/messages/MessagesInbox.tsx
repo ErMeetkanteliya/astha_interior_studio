@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, MailOpen, Trash2, Calendar, Phone, User, Compass, Eye, ShieldAlert } from 'lucide-react';
+import { Mail, MailOpen, Trash2, Calendar, Phone, User, Compass, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { cn, formatDate } from '@/lib/utils';
@@ -36,8 +36,9 @@ export function MessagesInbox({ messages }: MessagesInboxProps) {
         if (res.ok) {
           router.refresh();
           // Update local unread state immediately to refresh UI state
-          msg.read = true;
-          msg.viewedAt = new Date().toISOString();
+          setSelectedMessage((prev: any) =>
+            prev ? { ...prev, read: true, viewedAt: new Date().toISOString() } : prev
+          );
         }
       } catch (err) {
         console.error('Failed to mark message as read:', err);

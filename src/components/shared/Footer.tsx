@@ -180,11 +180,6 @@ export function Footer({ studioInfo }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="hover:text-primary-accent transition-colors">
-                  Gallery
-                </Link>
-              </li>
-              <li>
                 <Link href="/contact" className="hover:text-primary-accent transition-colors">
                   Contact
                 </Link>

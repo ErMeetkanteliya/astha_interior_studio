@@ -15,7 +15,7 @@ export async function GET() {
       3: 'disconnecting',
     };
 
-    const collections = await mongoose.connection.db.listCollections().toArray();
+    const collections = mongoose.connection.db ? await mongoose.connection.db.listCollections().toArray() : [];
     const collectionNames = collections.map((c) => c.name);
 
     return NextResponse.json({

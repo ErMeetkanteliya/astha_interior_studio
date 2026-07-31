@@ -2,7 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { IProject } from '@/lib/models/Project';
 import { Button } from '../ui/Button';
 import { ArrowUpRight } from 'lucide-react';
@@ -15,11 +14,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const { title, slug, category, location, shortDescription, featuredImage } = project;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    <div
       className="group flex flex-col bg-soft-white border border-light-accent overflow-hidden transition-luxury"
     >
       {/* Image container with slow zoom effect */}
@@ -65,6 +60,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

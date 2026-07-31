@@ -7,9 +7,9 @@ import Project, { IProject } from '@/lib/models/Project';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { ImageGallery } from '@/components/shared/ImageGallery';
-import { PageTransition } from '@/components/shared/PageTransition';
+import { PageTransition, RevealOnScroll } from '@/components/shared/PageTransition';
 import { ProjectCard } from '@/components/shared/ProjectCard';
-import { ArrowLeft, ArrowRight, ChevronRight, Calendar, MapPin, Layers, User, Expand } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ChevronRight, Calendar, MapPin, User, Expand } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
 interface ProjectDetailsPageProps {
@@ -252,8 +252,10 @@ export default async function ProjectDetailsPage({ params }: ProjectDetailsPageP
               Related Projects
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedProjects.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
+              {relatedProjects.map((project, idx) => (
+                <RevealOnScroll key={project.slug} delay={idx * 0.12}>
+                  <ProjectCard project={project} />
+                </RevealOnScroll>
               ))}
             </div>
           </Container>

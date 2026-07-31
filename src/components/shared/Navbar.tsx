@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,24 +9,48 @@ import { cn } from '@/lib/utils';
 
 interface NavbarProps {
   companyName?: string;
-  logoUrl?: string;
 }
 
-export function Navbar({ companyName = 'ASTHA', logoUrl }: NavbarProps) {
+export function Navbar({ companyName = 'ASTHA' }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
 
-  // Scroll listener
+  // Scroll listener — glassmorphism + directional hide/show
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      if (ticking.current) return;
+      ticking.current = true;
+
+      requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+
+        // Glassmorphism state
+        setIsScrolled(currentScrollY > 20);
+
+        // Hide/show on scroll direction (only beyond 100px)
+        if (currentScrollY > 100) {
+          if (currentScrollY > lastScrollY.current + 5) {
+            // Scrolling down — hide
+            setIsHidden(true);
+          } else if (currentScrollY < lastScrollY.current - 5) {
+            // Scrolling up — show
+            setIsHidden(false);
+          }
+        } else {
+          // At the top — always show
+          setIsHidden(false);
+        }
+
+        lastScrollY.current = currentScrollY;
+        ticking.current = false;
+      });
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -44,7 +68,6 @@ export function Navbar({ companyName = 'ASTHA', logoUrl }: NavbarProps) {
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Projects', href: '/projects' },
-    { name: 'Gallery', href: '/gallery' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -64,6 +87,10 @@ export function Navbar({ companyName = 'ASTHA', logoUrl }: NavbarProps) {
             ? 'glassmorphism py-4 shadow-sm'
             : 'bg-transparent py-6 border-b border-transparent'
         )}
+        style={{
+          transform: isHidden && !isMobileMenuOpen ? 'translateY(-100%)' : 'translateY(0)',
+          transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease-out, background-color 0.5s ease-out, box-shadow 0.5s ease-out',
+        }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
           {/* Logo Section */}
