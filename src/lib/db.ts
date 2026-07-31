@@ -21,35 +21,39 @@ declare global {
 let cached = global.mongooseCached;
 
 if (!cached) {
-  cached = global.mongooseCached = { conn: null, promise: null };
+  cached = global.mongooseCached = {
+    conn: null,
+    promise: null,
+  };
 }
 
 async function seedDatabase() {
   try {
-    // Seed Admin
     const adminCount = await Admin.countDocuments();
+
     if (adminCount === 0) {
       const hashedPassword = await bcrypt.hash('AdminPassword123!', 10);
+
       await Admin.create({
         email: 'admin@asthainterior.com',
         password: hashedPassword,
       });
-      console.log('\x1b[32m%s\x1b[0m', '--- DATABASE SEEDED: DEFAULT ADMIN CREATED ---');
-      console.log('Email: admin@asthainterior.com');
-      console.log('Password: AdminPassword123!');
-      console.log('--------------------------------------------------');
+
+      console.log('Default admin created.');
     }
 
-    // Seed StudioInfo
     const infoCount = await StudioInfo.countDocuments();
+
     if (infoCount === 0) {
       await StudioInfo.create({
         companyName: 'ASTHA',
         heroTitle: 'Crafting Premium Spaces That Inspire',
-        heroSubtitle: 'Luxury Residential & Commercial Interior Design Studio based in India.',
+        heroSubtitle:
+          'Luxury Residential & Commercial Interior Design Studio based in India.',
         aboutTitle: 'Elevating Spaces, Redefining Luxury',
         aboutSubtitle: 'THE ART OF INTERIOR DESIGN',
-        aboutDescription: 'We believe that exceptional design is a synthesis of form, function, and emotion. Our studio specializes in high-end, custom residential and commercial spaces that blend warm minimalism with premium comfort. Every project is curated to tell a unique story of refinement and sophistication.',
+        aboutDescription:
+          'We believe that exceptional design is a synthesis of form, function, and emotion. Our studio specializes in high-end, custom residential and commercial spaces that blend warm minimalism with premium comfort. Every project is curated to tell a unique story of refinement and sophistication.',
         phone: '+91 98765 43210',
         email: 'info@asthainterior.com',
         address: 'Luxury Heights, Suite 404, Ahmedabad, Gujarat, India',
@@ -60,8 +64,10 @@ async function seedDatabase() {
         linkedin: 'https://linkedin.com/company/asthainterior',
         footerCopyright: '© 2026 ASTHA Interior Studio. All rights reserved.',
         seoTitle: 'ASTHA Interior Studio | Luxury Interior Design',
-        seoDescription: 'Premium interior design and architecture studio specializing in high-end residential, commercial, villa, and luxury office renovations.',
-        seoKeywords: 'interior design, luxury home decor, premium architecture, villa renovations, office design, Ahmedabad, custom interior',
+        seoDescription:
+          'Premium interior design and architecture studio specializing in high-end residential, commercial, villa, and luxury office renovations.',
+        seoKeywords:
+          'interior design, luxury home decor, premium architecture, villa renovations, office design, Ahmedabad, custom interior',
         stat1Value: '150+',
         stat1Label: 'Projects Completed',
         stat2Value: '8+',
@@ -71,7 +77,8 @@ async function seedDatabase() {
         stat4Value: '24/7',
         stat4Label: 'Support',
       });
-      console.log('\x1b[32m%s\x1b[0m', '--- DATABASE SEEDED: DEFAULT STUDIO INFO CREATED ---');
+
+      console.log('Default studio info created.');
     }
   } catch (err) {
     console.error('Error during auto-seeding:', err);
@@ -84,43 +91,21 @@ async function connectDB() {
   }
 
   if (!cached!.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    console.log('[DB] Attempting connection to MongoDB Atlas...');
-
-    cached!.promise = mongoose.connect(MONGODB_URI!, opts).then(async (mongooseInstance) => {
-      const { host, port, name } = mongooseInstance.connection;
-      const readyState = mongooseInstance.connection.readyState;
-      const stateMap: Record<number, string> = {
-        0: 'disconnected',
-        1: 'connected',
-        2: 'connecting',
-        3: 'disconnecting',
-      };
-      console.log('\x1b[32m%s\x1b[0m', '[DB] MongoDB Atlas connected successfully!');
-      console.log(`[DB] Database: ${name}`);
-      console.log(`[DB] Host: ${host}:${port}`);
-      console.log(`[DB] ReadyState: ${readyState} (${stateMap[readyState] || 'unknown'})`);
-
-      // Execute seeding once DB connection is established
-      await seedDatabase();
-      return mongooseInstance;
-    });
+    cached!.promise = mongoose
+      .connect(MONGODB_URI!, {
+        bufferCommands: false,
+      })
+      .then(async (mongooseInstance) => {
+        await seedDatabase();
+        return mongooseInstance;
+      });
   }
 
   try {
     cached!.conn = await cached!.promise;
-  } catch (e: unknown) {
+  } catch (error) {
     cached!.promise = null;
-    const err = e as { name?: string; message?: string; code?: string | number; stack?: string };
-    console.error('\x1b[31m%s\x1b[0m', '[DB] MongoDB Atlas connection FAILED');
-    console.error(`[DB] Error name: ${err?.name}`);
-    console.error(`[DB] Error message: ${err?.message}`);
-    console.error(`[DB] Error code: ${err?.code}`);
-    console.error(`[DB] Full stack:`, err?.stack);
-    throw e;
+    throw error;
   }
 
   return cached!.conn;
