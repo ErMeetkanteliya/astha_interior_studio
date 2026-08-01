@@ -125,6 +125,8 @@ export function ProjectForm({ initialData, isEdit = false }: ProjectFormProps) {
       area: formData.area.trim() || null,
     };
 
+    console.log("CLIENT PAYLOAD", payload.galleryImages);
+
     try {
       const url = isEdit
         ? `/api/admin/projects/${initialData?._id}`

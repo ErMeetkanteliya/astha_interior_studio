@@ -38,16 +38,11 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    
-    // DEBUG: Trace galleryImages through the pipeline
-    console.log('[DEBUG POST] body.galleryImages:', JSON.stringify(body.galleryImages));
-    console.log('[DEBUG POST] body.galleryImages length:', body.galleryImages?.length);
+    console.log("SERVER BODY", body.galleryImages);
     
     // 2. Validate data
     const validatedData = projectSchema.parse(body);
-    
-    console.log('[DEBUG POST] validatedData.galleryImages:', JSON.stringify(validatedData.galleryImages));
-    console.log('[DEBUG POST] validatedData.galleryImages length:', validatedData.galleryImages?.length);
+    console.log("VALIDATED DATA", validatedData.galleryImages);
 
     await connectDB();
 
