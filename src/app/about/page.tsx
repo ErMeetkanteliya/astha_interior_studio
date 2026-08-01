@@ -139,29 +139,31 @@ export default async function AboutPage() {
                 <SectionTitle title="The Creative Minds" subtitle="OUR TEAM" />
               </RevealOnScroll>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-                {teamMembers.map((member: any, idx: number) => (
-                  <RevealOnScroll key={member._id || idx} delay={idx * 0.15}>
-                    <div className="flex flex-col items-center text-center group">
-                      <div className="relative aspect-[3/4] w-full overflow-hidden border border-light-accent/30 bg-off-white mb-6">
-                        <Image
-                          src={member.image?.url || '/images/team-1.jpg'}
-                          alt={member.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, 33vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      </div>
-                      <h3 className="font-serif text-xl font-medium tracking-wide text-deep-black group-hover:text-primary-accent transition-colors duration-300">
-                        {member.name}
-                      </h3>
-                      <span className="text-[10px] uppercase tracking-widest text-charcoal/50 font-light mt-1.5">
-                        {member.designation}
-                      </span>
-                    </div>
-                  </RevealOnScroll>
-                ))}
-              </div>
+             <div className="flex flex-wrap justify-center gap-8">
+  {teamMembers.map((member: any, idx: number) => (
+    <RevealOnScroll key={member._id || idx} delay={idx * 0.15}>
+      <div className="w-[340px] flex flex-col items-center text-center group">
+        <div className="relative aspect-[3/4] w-full overflow-hidden border border-light-accent/30 bg-off-white mb-6">
+          <Image
+            src={member.image?.url || '/images/team-1.jpg'}
+            alt={member.name}
+            fill
+            sizes="340px"
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
+
+        <h3 className="font-serif text-xl font-medium tracking-wide text-deep-black group-hover:text-primary-accent transition-colors duration-300">
+          {member.name}
+        </h3>
+
+        <span className="text-[10px] uppercase tracking-widest text-charcoal/50 font-light mt-1.5">
+          {member.designation}
+        </span>
+      </div>
+    </RevealOnScroll>
+  ))}
+</div>
             </Container>
           </section>
         )}
