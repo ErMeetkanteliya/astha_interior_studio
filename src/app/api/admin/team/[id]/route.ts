@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import TeamMember from '@/lib/models/TeamMember';
 import cloudinary from '@/lib/cloudinary';
@@ -58,6 +59,7 @@ export async function PUT(request: Request, { params }: RouteParams) {
       validatedData,
       { new: true }
     );
+    revalidatePath('/about');
 
     return NextResponse.json({ success: true, teamMember: updatedMember });
   } catch (err: any) {
@@ -103,6 +105,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
     }
 
     await TeamMember.findByIdAndDelete(id);
+    revalidatePath('/about');
 
     return NextResponse.json({
       success: true,

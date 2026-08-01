@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import connectDB from '@/lib/db';
 import TeamMember from '@/lib/models/TeamMember';
 import { z } from 'zod';
@@ -51,6 +52,7 @@ export async function POST(request: Request) {
     await connectDB();
 
     const teamMember = await TeamMember.create(validatedData);
+    revalidatePath('/about');
 
     return NextResponse.json({ success: true, teamMember });
   } catch (err: any) {

@@ -10,6 +10,8 @@ import { PageTransition, RevealOnScroll } from '@/components/shared/PageTransiti
 const DEFAULT_ABOUT_IMAGE = '/images/about.jpg';
 const DEFAULT_PHILOSOPHY_IMAGE = '/images/about-philosophy.jpg';
 
+export const revalidate = 0;
+
 export default async function AboutPage() {
   let studioData = {} as any;
   let teamMembers = [] as any[];
