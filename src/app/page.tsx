@@ -9,6 +9,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Button } from '@/components/ui/Button';
 import { ProjectCard } from '@/components/shared/ProjectCard';
 import { PageTransition, RevealOnScroll } from '@/components/shared/PageTransition';
+export const dynamic = "force-dynamic";
 
 // Local luxury placeholder images
 const DEFAULT_HERO_IMAGE = '/images/hero.jpg';

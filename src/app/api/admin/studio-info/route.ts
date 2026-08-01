@@ -5,6 +5,7 @@ import cloudinary from '@/lib/cloudinary';
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth';
+import { revalidatePath } from "next/cache";
 
 const imageSchema = z.object({
   url: z.string().url(),
@@ -131,6 +132,13 @@ export async function PUT(request: Request) {
       validatedData,
       { new: true, upsert: true }
     );
+
+    // Revalidate cache
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/contact");
+    revalidatePath("/services");
+    revalidatePath("/projects");
 
     return NextResponse.json({ success: true, studioInfo: updatedInfo });
   } catch (err: any) {
