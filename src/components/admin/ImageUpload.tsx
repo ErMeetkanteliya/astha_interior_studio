@@ -169,6 +169,9 @@ export function MultiImageUpload({
           toast.error(data.error || `Failed to upload "${file.name}".`);
         }
       }
+      // DEBUG: Trace gallery images before calling parent onChange
+      console.log('[DEBUG MULTI] uploadedImages before onChange:', JSON.stringify(uploadedImages));
+      console.log('[DEBUG MULTI] uploadedImages length:', uploadedImages.length);
       onChange(uploadedImages);
       toast.success('Gallery images updated.');
     } catch (err) {
