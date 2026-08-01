@@ -38,11 +38,9 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    console.log("SERVER BODY", body.galleryImages);
     
     // 2. Validate data
     const validatedData = projectSchema.parse(body);
-    console.log("VALIDATED DATA", validatedData.galleryImages);
 
     await connectDB();
 

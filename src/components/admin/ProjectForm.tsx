@@ -125,8 +125,6 @@ export function ProjectForm({ initialData, isEdit = false }: ProjectFormProps) {
       area: formData.area.trim() || null,
     };
 
-    console.log("CLIENT PAYLOAD", payload.galleryImages);
-
     try {
       const url = isEdit
         ? `/api/admin/projects/${initialData?._id}`
@@ -134,10 +132,6 @@ export function ProjectForm({ initialData, isEdit = false }: ProjectFormProps) {
       
       const method = isEdit ? 'PUT' : 'POST';
 
-      // DEBUG: Trace galleryImages in payload before fetch
-      console.log('[DEBUG FORM] formData.galleryImages:', JSON.stringify(formData.galleryImages));
-      console.log('[DEBUG FORM] payload.galleryImages:', JSON.stringify(payload.galleryImages));
-      
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },

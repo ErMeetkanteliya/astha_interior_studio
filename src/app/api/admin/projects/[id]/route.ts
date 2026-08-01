@@ -46,11 +46,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
     const { id } = resolvedParams;
 
     const body = await request.json();
-    console.log("SERVER BODY PUT", body.galleryImages);
     
     // 2. Validate data
     const validatedData = projectUpdateSchema.parse(body);
-    console.log("VALIDATED DATA PUT", validatedData.galleryImages);
 
     await connectDB();
 
