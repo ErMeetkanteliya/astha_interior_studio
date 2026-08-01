@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from "next/image";
 
 interface NavbarProps {
   companyName?: string;
@@ -85,22 +86,24 @@ export function Navbar({ companyName = 'ASTHA' }: NavbarProps) {
           'fixed top-0 left-0 right-0 z-40 transition-all duration-500 ease-out',
           isScrolled
             ? 'glassmorphism py-4 shadow-sm'
-            : 'bg-transparent py-6 border-b border-transparent'
+            : 'bg-transparent py-1 border-b border-transparent'
         )}
         style={{
           transform: isHidden && !isMobileMenuOpen ? 'translateY(-100%)' : 'translateY(0)',
           transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.5s ease-out, background-color 0.5s ease-out, box-shadow 0.5s ease-out',
         }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl h-fit px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 flex items-center justify-between">
           {/* Logo Section */}
-          <Link href="/" className="group flex flex-col justify-center select-none">
-            <span className="font-serif text-2xl tracking-[0.15em] font-light text-deep-black uppercase group-hover:text-primary-accent transition-colors duration-300">
-              {companyName}
-            </span>
-            <span className="font-sans text-[7px] tracking-[0.4em] font-semibold text-charcoal/50 uppercase -mt-0.5 group-hover:text-primary-accent/70 transition-colors duration-300">
-              Interior Studio
-            </span>
+          <Link href="/" className=" group flex items-center select-none">
+              <Image
+    src="/astha-logo-clean.png"
+    alt="Astha Interior Studio"
+   width={260}
+  height={85}
+  priority
+  className="w-auto h-20 object-contain"
+  />
           </Link>
 
           {/* Desktop Navigation */}
@@ -177,7 +180,7 @@ export function Navbar({ companyName = 'ASTHA' }: NavbarProps) {
                 </motion.div>
               ))}
             </nav>
-            
+
             {/* Mobile Footer Info */}
             <div className="mt-auto mb-10 text-center font-sans text-[10px] tracking-widest text-charcoal/40 uppercase">
               {companyName} Interior Studio
