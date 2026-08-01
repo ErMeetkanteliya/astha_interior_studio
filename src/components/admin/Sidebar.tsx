@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, FolderKanban, Info, Mail, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, Users, Info, Mail, User, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -14,6 +14,7 @@ export function Sidebar() {
   const menuItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Projects', href: '/admin/projects', icon: FolderKanban },
+    { name: 'Team Members', href: '/admin/team', icon: Users },
     { name: 'Studio Information', href: '/admin/studio-info', icon: Info },
     { name: 'Contact Messages', href: '/admin/messages', icon: Mail },
     { name: 'Profile Settings', href: '/admin/profile', icon: User },

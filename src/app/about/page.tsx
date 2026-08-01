@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import connectDB from '@/lib/db';
 import StudioInfo from '@/lib/models/StudioInfo';
+import TeamMember from '@/lib/models/TeamMember';
 import { Container } from '@/components/ui/Container';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { PageTransition, RevealOnScroll } from '@/components/shared/PageTransition';
@@ -9,27 +10,9 @@ import { PageTransition, RevealOnScroll } from '@/components/shared/PageTransiti
 const DEFAULT_ABOUT_IMAGE = '/images/about.jpg';
 const DEFAULT_PHILOSOPHY_IMAGE = '/images/about-philosophy.jpg';
 
-// Static Team Members (as required)
-const TEAM_MEMBERS = [
-  {
-    name: 'Astha Patel',
-    role: 'Principal Designer & Founder',
-    image: '/images/team-1.jpg',
-  },
-  {
-    name: 'Kabir Mehta',
-    role: 'Lead Architect',
-    image: '/images/team-2.jpg',
-  },
-  {
-    name: 'Meera Sen',
-    role: 'Interior Stylist',
-    image: '/images/team-3.jpg',
-  },
-];
-
 export default async function AboutPage() {
   let studioData = {} as any;
+  let teamMembers = [] as any[];
 
   try {
     await connectDB();
@@ -37,6 +20,11 @@ export default async function AboutPage() {
     if (info) {
       studioData = JSON.parse(JSON.stringify(info));
     }
+
+    const teamDocs = await TeamMember.find({ isActive: true })
+      .sort({ order: 1, createdAt: 1 })
+      .lean();
+    teamMembers = JSON.parse(JSON.stringify(teamDocs));
   } catch (err) {
     console.error('Failed to load about details:', err);
   }
@@ -141,38 +129,40 @@ export default async function AboutPage() {
           </Container>
         </section>
 
-        {/* Static Team Members Section */}
-        <section className="py-20 sm:py-28 bg-soft-white">
-          <Container>
-            <RevealOnScroll>
-              <SectionTitle title="The Creative Minds" subtitle="OUR TEAM" />
-            </RevealOnScroll>
+        {/* Dynamic Team Members Section */}
+        {teamMembers.length > 0 && (
+          <section className="py-20 sm:py-28 bg-soft-white">
+            <Container>
+              <RevealOnScroll>
+                <SectionTitle title="The Creative Minds" subtitle="OUR TEAM" />
+              </RevealOnScroll>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-              {TEAM_MEMBERS.map((member, idx) => (
-                <RevealOnScroll key={idx} delay={idx * 0.15}>
-                  <div className="flex flex-col items-center text-center group">
-                    <div className="relative aspect-[3/4] w-full overflow-hidden border border-light-accent/30 bg-off-white mb-6">
-                      <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 33vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                {teamMembers.map((member: any, idx: number) => (
+                  <RevealOnScroll key={member._id || idx} delay={idx * 0.15}>
+                    <div className="flex flex-col items-center text-center group">
+                      <div className="relative aspect-[3/4] w-full overflow-hidden border border-light-accent/30 bg-off-white mb-6">
+                        <Image
+                          src={member.image?.url || '/images/team-1.jpg'}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                      <h3 className="font-serif text-xl font-medium tracking-wide text-deep-black group-hover:text-primary-accent transition-colors duration-300">
+                        {member.name}
+                      </h3>
+                      <span className="text-[10px] uppercase tracking-widest text-charcoal/50 font-light mt-1.5">
+                        {member.designation}
+                      </span>
                     </div>
-                    <h3 className="font-serif text-xl font-medium tracking-wide text-deep-black group-hover:text-primary-accent transition-colors duration-300">
-                      {member.name}
-                    </h3>
-                    <span className="text-[10px] uppercase tracking-widest text-charcoal/50 font-light mt-1.5">
-                      {member.role}
-                    </span>
-                  </div>
-                </RevealOnScroll>
-              ))}
-            </div>
-          </Container>
-        </section>
+                  </RevealOnScroll>
+                ))}
+              </div>
+            </Container>
+          </section>
+        )}
       </div>
     </PageTransition>
   );

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Admin from './models/Admin';
 import StudioInfo from './models/StudioInfo';
+import TeamMember from './models/TeamMember';
 import bcrypt from 'bcryptjs';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -79,6 +80,36 @@ async function seedDatabase() {
       });
 
       console.log('Default studio info created.');
+    }
+
+    const teamCount = await TeamMember.countDocuments();
+
+    if (teamCount === 0) {
+      await TeamMember.create([
+        {
+          name: 'Astha Patel',
+          designation: 'Principal Designer & Founder',
+          image: { url: '/images/team-1.jpg', publicId: 'static_team_1' },
+          order: 1,
+          isActive: true,
+        },
+        {
+          name: 'Kabir Mehta',
+          designation: 'Lead Architect',
+          image: { url: '/images/team-2.jpg', publicId: 'static_team_2' },
+          order: 2,
+          isActive: true,
+        },
+        {
+          name: 'Meera Sen',
+          designation: 'Interior Stylist',
+          image: { url: '/images/team-3.jpg', publicId: 'static_team_3' },
+          order: 3,
+          isActive: true,
+        },
+      ]);
+
+      console.log('Default team members created.');
     }
   } catch (err) {
     console.error('Error during auto-seeding:', err);
